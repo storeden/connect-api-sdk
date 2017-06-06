@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2016 Projectmoon, SRL.
+ * Copyright 2017 Projectmoon, SRL.
  *
  * You are hereby granted a non-exclusive, worldwide, royalty-free license to
  * use, copy, modify, and distribute this software in source code or binary
@@ -28,7 +28,7 @@ if (!function_exists('json_decode')) {
 
 class StoredenConnectAPI {
 
-    const VERSION = '1.0-dev';
+    const VERSION = '1.1-stable';
 
     private $api_version = 'v1.1';
 
@@ -38,13 +38,15 @@ class StoredenConnectAPI {
 
     private $exchange = NULL;
 
+	private $last_error = array();
+
     private $curl_opts = array(
       CURLOPT_CONNECTTIMEOUT => 5,
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_TIMEOUT        => 20,
       CURLOPT_VERBOSE        => FALSE,
       CURLOPT_SSLVERSION     => CURL_SSLVERSION_DEFAULT,
-      CURLOPT_USERAGENT      => 'storeden-php-1.1b',
+      CURLOPT_USERAGENT      => 'storeden-php-1.1',
     );
 
     public function __construct($options){
@@ -53,7 +55,7 @@ class StoredenConnectAPI {
             throw new Exception('StoredenConnectSDK need your Connect key');
         }
 
-        if(!isset($options['key'])){
+        if(!isset($options['exchange'])){
             throw new Exception('StoredenConnectSDK need your Connect exchange key');
         }
 
@@ -81,6 +83,16 @@ class StoredenConnectAPI {
             throw new Exception('Invalid response from API');
 
         $content = json_decode($curl_output);
+
+		$this->last_error = array();
+
+		if($content->error > 0){
+			$this->last_error = array(
+				'error_code' => $content->error,
+				'error_message' => $content->message,
+				'timestamp' => time()
+			);
+		}
 
         return $content;
 
@@ -110,10 +122,19 @@ class StoredenConnectAPI {
 
         if ($callback == NULL){
             return $this->__parse_response($curl_response);
-        }else{
-            return call_user_func($callback, $this->__parse_response($curl_response));
         }
 
+        return call_user_func($callback, $this->__parse_response($curl_response));
     }
+
+	/**
+	 * Return last error code and message.
+	 * @return array()
+	 **/
+	public function getLastError(){
+
+		return $this->last_error;
+
+	}
 }
 ?>
