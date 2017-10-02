@@ -13,17 +13,16 @@ git clone https://github.com/storeden/connect-api-sdk.git
 ## Example
 
 ```php
-$conf = array(
-    'key' => '{your-app-key}',
-    'exchange' => '{your-app-exchange}',
-    'api_version' => 'v1.1'
-);
+$conf = [
+    'api_key' => '{your-app-key}',
+    'api_exchange' => '{your-app-exchange}'
+];
 
-$connect = new StoredenConnectAPI($conf);
+$api = new Storeden\Storeden($config);
 
-$store_info = $connect->api('/store/info.json');
+$_store_info = $api->get('/store/info.json');
 
-echo 'Store Name: '.$store_info->store_name;
+echo 'Store Name: '.$_store_info->response->store_name;
 
 ```
 

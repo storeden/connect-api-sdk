@@ -1,0 +1,17 @@
+{
+    "name": "storeden/connect-api-sdk",
+    "description": "Storeden Connect API SDK for PHP",
+    "keywords": ["storeden", "connect api", "sdk", "storeden php"],
+    "type": "library",
+    "homepage": "https://github.com/storeden/connect-api-sdk",
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Storeden",
+            "homepage": "https://github.com/storeden/connect-api-sdk/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "^5.4|^7.0"
+    }
+}
