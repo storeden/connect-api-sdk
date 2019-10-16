@@ -28,7 +28,7 @@ class Storeden{
 	/**
 	 * @const {String} Version number of the official Storeden Connect API SDK (PHP)
 	 */
-	const SDK_VERSION = '1.9';
+	const SDK_VERSION = '1.67.b';
 
 	/**
 	 * @const {String} Default Connect API version for requests. Can be varied by new Storeden\Storeden($config);
@@ -88,6 +88,22 @@ class Storeden{
 			'DELETE',
 			$params
 		);
+	}
+
+	public function upload($endpoint, $filename, $params = []){
+
+		if(!file_exists($filename)){
+			throw new StoredenSDKException('Filename: '.$filename.' must exists ');
+		}
+
+		$params['file'] = curl_file_create($filename);
+
+		return $this->api(
+			$endpoint,
+			'UPLOAD',
+			$params
+		);
+
 	}
 
 	public function api($endpoint, $method, $params = [], $callback = ''){

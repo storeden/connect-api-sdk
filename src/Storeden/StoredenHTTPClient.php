@@ -95,7 +95,10 @@ class StoredenHTTPClient {
 			CURLOPT_HTTPHEADER => $this->prepareRequestHeader($headers)
 		];
 
-		if($method !== 'GET'){
+		if($method === 'UPLOAD'){
+			$options[CURLOPT_POSTFIELDS] = $params;
+			$options[CURLOPT_CUSTOMREQUEST] = 'POST';
+		}elseif($method !== 'GET'){
 			$options[CURLOPT_POSTFIELDS] = http_build_query($params);
 		}
 
