@@ -18,7 +18,7 @@ $conf = [
     'api_exchange' => '{your-app-exchange}'
 ];
 
-$api = new Storeden\Storeden($config);
+$api = new Storeden\Storeden($conf);
 
 $_store_info = $api->get('/store/info.json');
 
